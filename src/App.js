@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import * as d3 from 'd3';
+class App extends React.Component {
+   constructor(props){
+      super(props);
+      this.myRef = React.createRef();
+      this.dataset = [100, 200, 300, 400, 500];
+   }
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+   componentDidMount(){
+      console.log("myref", this.myRef);
+      let size = 500;
+      let svg = d3.select(this.myRef.current)
+                  .append('svg')
+                  .attr('width', size)
+                  .attr('height', size);
+
+      let rect_width = 95;
+      svg.selectAll('rect')
+         .data(this.dataset)
+         .enter()
+         .append('rect')
+         .attr('x', (d, i) => 5 + i*(rect_width + 5))
+         .attr('y', d => size - d)
+         .attr('width', rect_width)
+         .attr('height', d => d)
+         .attr('fill', 'teal');
+      } render(){
+      return (
+         <div ref={this.myRef}>
+         </div>
+      );
+   }
+
 }
 
 export default App;
